@@ -1,4 +1,4 @@
-const {Drinks, DrinkMaker} = require("./coffeMachine");
+const { Drinks, DrinkMaker } = require("./coffeMachine");
 
 //1st iteration
 test("test with no sugar and good drink", () => {
@@ -64,3 +64,20 @@ test("error if not enough money", () => {
     const drinkMaker = new DrinkMaker(drink, 0.2);
     expect(drinkMaker.make()).toBe("0.2€ is missing");
 });
+
+//3rd iteration
+test("can make orange juice", () => {
+    const drink = new Drinks("orange_juice");
+    const drinkMaker = new DrinkMaker(drink, 0.6);
+    expect(drinkMaker.make()).toBe("Here is your orange juice");
+});
+
+test("can make extra hot drinks", () => {
+    const drink = new Drinks("tea", 1, true);
+    const drinkMaker = new DrinkMaker(drink, 0.4);
+    expect(drinkMaker.make()).toBe(
+        "Here is your extra hot tea with 1 sugar and a stick"
+    );
+});
+
+
