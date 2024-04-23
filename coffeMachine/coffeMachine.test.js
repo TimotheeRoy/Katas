@@ -91,7 +91,7 @@ test("can print report at any time", () => {
         money_earned: 0,
     });
     let drink = new Drinks("coffe");
-    drinkMaker.make(drink)
+    drinkMaker.make(drink);
     expect(drinkMaker.getReport()).toStrictEqual({
         coffe: 1,
         tea: 0,
@@ -99,8 +99,8 @@ test("can print report at any time", () => {
         orange_juice: 0,
         money_earned: 0.6,
     });
-    drink = new Drinks("orange_juice")
-    drinkMaker.make(drink)
+    drink = new Drinks("orange_juice");
+    drinkMaker.make(drink);
     expect(drinkMaker.getReport()).toStrictEqual({
         coffe: 1,
         tea: 0,
@@ -108,8 +108,8 @@ test("can print report at any time", () => {
         orange_juice: 1,
         money_earned: 1.2,
     });
-    drink = new Drinks("coffe")
-    drinkMaker.make(drink)
+    drink = new Drinks("coffe");
+    drinkMaker.make(drink);
     expect(drinkMaker.getReport()).toStrictEqual({
         coffe: 2,
         tea: 0,
@@ -117,4 +117,31 @@ test("can print report at any time", () => {
         orange_juice: 1,
         money_earned: 1.8,
     });
+});
+
+//5th iteration
+test("if there is a shortage I want a message on the machine", () => {
+    const coffe = new Drinks("coffe");
+    const tea = new Drinks("tea");
+    const drinkMaker = new DrinkMaker(2);
+    drinkMaker.make(coffe);
+    drinkMaker.make(coffe);
+    expect(drinkMaker.make(coffe)).toBe("No more coffe");
+    expect(drinkMaker.make(tea)).toBe(
+        "Here is your tea with no sugar and therefore no stick"
+    );
+});
+
+test("I want an email (on the console here) if there is a shortage", () => {
+    const coffe = new Drinks("coffe");
+    const drinkMaker = new DrinkMaker(2);
+    const consoleSpy = jest.spyOn(console, "log");
+
+    drinkMaker.make(coffe);
+    drinkMaker.make(coffe);
+    drinkMaker.make(coffe);
+
+    expect(consoleSpy).toHaveBeenCalledWith("You have to refill the coffe");
+
+    consoleSpy.mockRestore();
 });

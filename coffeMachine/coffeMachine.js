@@ -54,31 +54,40 @@ class DrinkMaker {
         orange_juice: 0,
         money_earned: 0,
     };
+    qty = { coffe: 2, tea: 100, chocolate: 100, orange_juice: 100 };
 
     constructor(givenMoney) {
         this.givenMoney = givenMoney;
     }
 
     make(drink) {
-        if (this.prices[drink.getName()] <= this.givenMoney) {
-            this.report[drink.getName()]++;
-            this.report.money_earned += this.prices[drink.getName()];
-            this.report.money_earned = parseFloat(this.report.money_earned.toFixed(1))
-            return drink.makeDrink();
+        if (this.qty[drink.getName()] > 0) {
+            this.qty[drink.getName()]--;
+            if (this.prices[drink.getName()] <= this.givenMoney) {
+                this.report[drink.getName()]++;
+                this.report.money_earned += this.prices[drink.getName()];
+                this.report.money_earned = parseFloat(
+                    this.report.money_earned.toFixed(1)
+                );
+                return drink.makeDrink();
+            } else {
+                return `${(
+                    this.prices[drink.getName()] - this.givenMoney
+                ).toFixed(1)}€ is missing`;
+            }
         } else {
-            return `${(this.prices[drink.getName()] - this.givenMoney).toFixed(
-                1
-            )}€ is missing`;
+            this.getEmailIfEmpty(drink)
+            return `No more ${drink.getName()}`;
         }
+    }
+
+    getEmailIfEmpty(drink){
+        console.log(`You have to refill the ${drink.getName()}`)
     }
 
     getReport() {
         return this.report;
     }
 }
-
-const drink = new Drinks('coffe')
-const drinkMaker = new DrinkMaker(1)
-console.log(drinkMaker.getReport())
 
 module.exports = { Drinks, DrinkMaker };
